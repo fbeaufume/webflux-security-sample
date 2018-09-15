@@ -2,7 +2,7 @@
 
 This is a sample Spring Boot reactive and secured application.
 
-This is also a MWE (minimalistic working example) for https://stackoverflow.com/questions/49877221/spring-security-5-logging-for-reactive-applications
+This is also a minimalistic working example for https://stackoverflow.com/questions/49877221/spring-security-5-logging-for-reactive-applications
 
 Run with `mvn spring-boot:run`.
 

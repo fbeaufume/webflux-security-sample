@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
 import java.time.Duration;
 
 /**
@@ -18,18 +19,26 @@ public class HelloController {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
 
     @GetMapping("/public")
-    public Mono<String> publicMessage(@RequestParam(required = false, defaultValue = "200") long duration) {
-        return pause("Hello from a public page", duration);
+    public Mono<String> publicHello(
+            @RequestParam(required = false, defaultValue = "200") long duration,
+            Principal principal) {
+        return sayHello(principal, "public", duration);
     }
 
     @GetMapping("/private")
-    public Mono<String> privateMessage(@RequestParam(required = false, defaultValue = "200") long duration) {
-        return pause("Hello from a private page", duration);
+    public Mono<String> privateHello(
+            @RequestParam(required = false, defaultValue = "200") long duration,
+            Principal principal) {
+        return sayHello(principal, "private", duration);
     }
 
-    private Mono<String> pause(String message, long duration) {
+    private Mono<String> sayHello(Principal principal, String pageType, long duration) {
         return Mono.delay(Duration.ofMillis(duration))
                 .doFinally(s -> LOGGER.info("Paused for {} msec", duration))
-                .then(Mono.just(message));
+                .then(Mono.just("Hello " + getPrincipalName(principal) + ", from a " + pageType + " page"));
+    }
+
+    private String getPrincipalName(Principal principal) {
+        return principal == null ? "anonymous" : principal.getName();
     }
 }
