@@ -1,4 +1,4 @@
-package com.adeliosys.mockup;
+package com.adeliosys.sample;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
